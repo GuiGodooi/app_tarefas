@@ -47,6 +47,11 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        padding: EdgeInsets.all(
+                          11,
+                        ),
+                      ),
                       onPressed: () {},
                       child: Icon(
                         Icons.check,
@@ -54,6 +59,17 @@ class _MyHomePageState extends State<MyHomePage> {
                       ),
                     ),
                   )
+                ],
+              ),
+              Row(
+                children: [
+                  Text(
+                    'Você possui 0 tarefas pendentes',
+                  ),
+                  ElevatedButton(
+                    onPressed: () {},
+                    child: Text('Limpar'),
+                  ),
                 ],
               ),
             ],
