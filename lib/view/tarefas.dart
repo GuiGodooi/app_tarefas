@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 
+import '../model/todo.dart';
+import 'list_todos.dart';
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({Key? key}) : super(key: key);
 
@@ -8,20 +11,31 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+  final TextEditingController todoController = TextEditingController();
+  final List<Todo> todos = [];
+
+  Todo? deletedTodo;
+  int? deletedTodoPos;
+
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Crie suas tarefas'),
-      ),
-      body: SafeArea(
-        child: Center(
+    return SafeArea(
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text(
+            'Tarefas App',
+            textAlign: TextAlign.center,
+          ),
+        ),
+        body: Center(
           child: Column(
+            mainAxisSize: MainAxisSize.max,
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Padding(
-                padding: const EdgeInsets.all(8.0),
+              const Padding(
+                padding: EdgeInsets.all(12),
                 child: Text(
-                  'Tarefas',
+                  'Lista de Tarefas',
                   style: TextStyle(fontSize: 35),
                 ),
               ),
@@ -30,16 +44,14 @@ class _MyHomePageState extends State<MyHomePage> {
                   Expanded(
                     flex: 3,
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 10),
-                      child: SizedBox(
-                        height: 50,
-                        width: 270,
-                        child: TextField(
-                          decoration: InputDecoration(
-                            labelText: 'Adicione uma Tarefa',
-                            hintText: 'Ex. Fazer Exercício',
-                            border: OutlineInputBorder(),
-                          ),
+                      padding: const EdgeInsets.all(10),
+                      child: TextField(
+                        controller: todoController,
+                        decoration: const InputDecoration(
+                          fillColor: Colors.white,
+                          labelText: 'Adicione uma Tarefa',
+                          hintText: 'Ex. Fazer Exercício',
+                          border: OutlineInputBorder(),
                         ),
                       ),
                     ),
@@ -47,13 +59,22 @@ class _MyHomePageState extends State<MyHomePage> {
                   Padding(
                     padding: const EdgeInsets.all(8.0),
                     child: ElevatedButton(
+                      onPressed: () {
+                        String text = todoController.text;
+
+                        setState(() {
+                          Todo newTodo = Todo(
+                            title: text,
+                            dateTime: DateTime.now(),
+                          );
+                          todos.add(newTodo);
+                        });
+                        todoController.clear();
+                      },
                       style: ElevatedButton.styleFrom(
-                        padding: EdgeInsets.all(
-                          11,
-                        ),
+                        padding: const EdgeInsets.all(16),
                       ),
-                      onPressed: () {},
-                      child: Icon(
+                      child: const Icon(
                         Icons.check,
                         color: Colors.white,
                       ),
@@ -61,19 +82,98 @@ class _MyHomePageState extends State<MyHomePage> {
                   )
                 ],
               ),
-              Row(
-                children: [
-                  Text(
-                    'Você possui 0 tarefas pendentes',
+              const SizedBox(
+                height: 5,
+              ),
+              Flexible(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: ListView(
+                    shrinkWrap: true,
+                    children: [
+                      //lista de tarefas;
+                      for (Todo todo in todos)
+                        TodoListItem(
+                          todo: todo,
+                          onDelete: onDelete,
+                        ),
+                    ],
                   ),
-                  ElevatedButton(
-                    onPressed: () {},
-                    child: Text('Limpar'),
-                  ),
-                ],
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              SizedBox(
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Text(
+                          //Texto no inferior com a quantidades de tarefas;
+                          'Você possui ${todos.length} tarefas pendentes',
+                        ),
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(8.0),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          padding: const EdgeInsets.all(
+                            11,
+                          ),
+                        ),
+                        onPressed: () {
+                          //limpar toda a lista;
+                          String text = todoController.text;
+
+                          setState(() {
+                            Todo(
+                              title: text,
+                              dateTime: DateTime.now(),
+                            );
+                            todos.clear();
+                          });
+                          todoController.clear();
+                        },
+                        child: const Icon(
+                          Icons.delete,
+                          color: Colors.white,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  void onDelete(Todo todo) {
+    deletedTodo = todo;
+    deletedTodoPos = todos.indexOf(todo);
+
+    setState(() {
+      todos.remove(todo);
+    });
+    ScaffoldMessenger.of(context).clearSnackBars(); //limpar notificação
+    ScaffoldMessenger.of(context).showSnackBar(
+      //Mostrar notificação
+      SnackBar(
+        content: Text(
+          'Tarefa ${todo.title} foi removida com sucesso!',
+        ),
+        action: SnackBarAction(
+          label: 'Desfazer',
+          onPressed: () {
+            setState(() {
+              todos.insert(deletedTodoPos!, deletedTodo!);
+            });
+          },
         ),
       ),
     );
