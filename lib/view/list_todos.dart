@@ -31,7 +31,7 @@ class TodoListItem extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
               backgroundColor: const Color(0xFFFE4A49),
               foregroundColor: Colors.white,
-              icon: Icons.delete,
+              icon: Icons.delete_forever_sharp,
               label: 'Delete',
             ),
           ],
@@ -41,7 +41,7 @@ class TodoListItem extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.blue[100],
+            color: Colors.pink[100],
           ),
           child: Padding(
             padding: const EdgeInsets.all(12),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-
 import '../model/todo.dart';
 import 'list_todos.dart';
 
@@ -12,7 +11,7 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   final TextEditingController todoController = TextEditingController();
-  final List<Todo> todos = [];
+  final List<Todo> todos = []; //Lista
 
   Todo? deletedTodo;
   int? deletedTodoPos;
@@ -61,7 +60,7 @@ class _MyHomePageState extends State<MyHomePage> {
                     child: ElevatedButton(
                       onPressed: () {
                         String text = todoController.text;
-
+                        //Tarefas adicionadas no botão de enviar;
                         setState(() {
                           Todo newTodo = Todo(
                             title: text,
@@ -69,6 +68,7 @@ class _MyHomePageState extends State<MyHomePage> {
                           );
                           todos.add(newTodo);
                         });
+                        //após adicionar lista, limpar caixa de texto;
                         todoController.clear();
                       },
                       style: ElevatedButton.styleFrom(
