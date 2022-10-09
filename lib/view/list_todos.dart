@@ -21,7 +21,6 @@ class TodoListItem extends StatelessWidget {
       child: Slidable(
         endActionPane: ActionPane(
           motion: const DrawerMotion(),
-          dismissible: DismissiblePane(onDismissed: () {}),
           children: [
             SlidableAction(
               onPressed: (context) {
@@ -41,7 +40,7 @@ class TodoListItem extends StatelessWidget {
           padding: const EdgeInsets.all(4),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(16),
-            color: Colors.pink[100],
+            color: Colors.blueGrey,
           ),
           child: Padding(
             padding: const EdgeInsets.all(12),
