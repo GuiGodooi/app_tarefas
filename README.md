@@ -1,6 +1,10 @@
 # app_listatarefas
 
-A new Flutter project.
+  Aplicativo para organizar suas tarefas
+  
+  Crie tarefas com Títulos sincronizados com data e hora!
+  
+  Contem Slidable para apagar sua tarefa;
 
 ## Getting Started
 
